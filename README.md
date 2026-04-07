@@ -1,1 +1,1 @@
-Course for https://www.udemy.com/course/learn-python-by-building-a-blockchain-cryptocurrency
+Course for https://www.udemy.com/course/learn-python-by-building-a-blockchain-cryptocurrencyhjn
