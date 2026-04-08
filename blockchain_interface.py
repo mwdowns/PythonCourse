@@ -1,5 +1,6 @@
-from BlockchainProject.transaction import *
-from BlockchainProject.blockchain import *
+from BlockchainProject.transaction import add_transaction
+from BlockchainProject.blockchain import owner, mine_block, verify_chain, print_blocks
+from BlockchainProject.wallet import update_wallet
 running = True
 
 
@@ -9,8 +10,10 @@ def get_user_input():
 
 
 def get_transaction_value():
-    """ Returns a float for transaction. """
-    return float(input("What is the transaction amount? "))
+    """ Returns a tuple for for transaction of recipient and value. """
+    recipient = input("Who are you sending money to? ")
+    tx_amount = float(input("What is the transaction amount? "))
+    return recipient, tx_amount
 
 
 def show_menu():
@@ -29,8 +32,14 @@ while running:
 
     input_value = get_user_input()
     if input_value == 1:
-        tx_amount = get_transaction_value()
-        add_transaction(blockchain=blockchain, val=tx_amount, last_transaction=get_last_blockchain_val())
+        recipient, tx_amount = get_transaction_value()
+        transaction = add_transaction(sender=owner, recipient=recipient, value=tx_amount)
+        if transaction:
+            mine_block(transaction=transaction)
+            update_wallet()
+        else:
+            print('not enough funds')
+            continue
     elif input_value == 2:
         print_blocks()
     elif input_value == 3:
@@ -38,7 +47,7 @@ while running:
         running = False
     else:
         print('Invalid option!')
-    
+
     if not verify_chain():
         print('Invalid block in blockchain.')
         running = False
