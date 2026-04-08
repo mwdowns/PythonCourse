@@ -37,6 +37,22 @@ def print_blocks():
         print(block)
 
 
+def verify_chain():
+    block_index = 0
+    is_valid = True
+    for block in blockchain:
+        if block_index == 0:
+            block_index += 1
+            continue
+        elif block[0] == blockchain[block_index - 1]:
+            is_valid = True
+        else:
+            is_valid = False
+            break
+        block_index += 1
+    return is_valid
+
+
 def show_menu():
     print("Please choose option.")
     print("1. Add transaction.")
@@ -62,3 +78,7 @@ while True:
         break
     else:
         print('Invalid option!')
+    
+    if not verify_chain():
+        print('Invalid block in blockchain.')
+        break
