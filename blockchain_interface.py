@@ -1,6 +1,6 @@
 from BlockchainProject.transaction import add_transaction
-from BlockchainProject.blockchain import owner, mine_block, verify_chain, print_blocks
-from BlockchainProject.wallet import update_wallet
+from BlockchainProject.blockchain import owner, mine_block, verify_chain
+from BlockchainProject.wallet import update_wallet, get_balance
 running = True
 
 
@@ -19,7 +19,7 @@ def get_transaction_value():
 def show_menu():
     print("Please choose option.")
     print("1. Add transaction.")
-    print("2. Print blocks.")
+    print("2. Get balance.")
     print("3. Exit")
 
 
@@ -41,7 +41,7 @@ while running:
             print('not enough funds')
             continue
     elif input_value == 2:
-        print_blocks()
+        print('Balance for {}: {:.2f}'.format(owner, get_balance(owner)))
     elif input_value == 3:
         exit()
         running = False
