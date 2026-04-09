@@ -1,5 +1,5 @@
-from BlockchainProject.blockchain import MINING_REWARD, open_transactions
-from BlockchainProject.wallet import wallet
+from modules.blockchain import MINING_REWARD, open_transactions
+from modules.wallet import wallet
 from collections import OrderedDict
 
 participents = {'Matt'}

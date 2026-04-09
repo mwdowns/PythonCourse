@@ -1,6 +1,6 @@
-from BlockchainProject.transaction import add_transaction
-from BlockchainProject.blockchain import owner, mine_block, verify_chain
-from BlockchainProject.wallet import update_wallet, get_balance
+from modules.transaction import add_transaction
+from modules.blockchain import owner, mine_block, verify_chain
+from modules.wallet import update_wallet, get_balance
 running = True
 
 

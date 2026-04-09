@@ -1,4 +1,4 @@
-from BlockchainProject.blockchain import blockchain, owner, open_transactions
+from modules.blockchain import blockchain, owner, open_transactions
 
 def initialize_wallet(owner): 
     # wallet balance will be from blockchain
