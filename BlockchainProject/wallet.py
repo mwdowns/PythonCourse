@@ -1,4 +1,4 @@
-from BlockchainProject.blockchain import blockchain, owner
+from BlockchainProject.blockchain import blockchain, owner, open_transactions
 
 def initialize_wallet(owner): 
     # wallet balance will be from blockchain
@@ -6,9 +6,12 @@ def initialize_wallet(owner):
 
 
 def get_balance(participent):
-    sent = sum([sum(list) for list in [[tx['value'] for tx in block['transaction'] if tx['sender'] == participent] for block in blockchain]])
-    recieved = sum([sum(list) for list in [[tx['value'] for tx in block['transaction'] if tx['recipient'] == participent] for block in blockchain]])
-    return recieved - sent
+    # open transactions that haven't been added to blockchain
+    tx_sent = sum(list for list in [tx['value'] for tx in open_transactions if tx['sender'] == participent])
+    # blockchain transactions
+    bl_sent = sum([sum(list) for list in [[tx['value'] for tx in block['transactions'] if tx['sender'] == participent] for block in blockchain]])
+    recieved = sum([sum(list) for list in [[tx['value'] for tx in block['transactions'] if tx['recipient'] == participent] for block in blockchain]])
+    return recieved - (bl_sent + tx_sent)
 
 
 wallet = initialize_wallet(owner)

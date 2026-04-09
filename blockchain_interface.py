@@ -18,9 +18,10 @@ def get_transaction_value():
 
 def show_menu():
     print("Please choose option.")
-    print("1. Add transaction.")
-    print("2. Get balance.")
-    print("3. Exit")
+    print("1. Mine block.")
+    print("2. Add transaction.")
+    print("3. Get balance.")
+    print("4. Exit")
 
 
 def exit():
@@ -32,17 +33,18 @@ while running:
 
     input_value = get_user_input()
     if input_value == 1:
+        mine_block()
+    elif input_value == 2:
         recipient, tx_amount = get_transaction_value()
         transaction = add_transaction(sender=owner, recipient=recipient, value=tx_amount)
         if transaction:
-            mine_block(transaction=transaction)
             update_wallet()
         else:
             print('not enough funds')
             continue
-    elif input_value == 2:
-        print('Balance for {}: {:.2f}'.format(owner, get_balance(owner)))
     elif input_value == 3:
+        print('Balance for {}: {:.2f}'.format(owner, get_balance(owner)))
+    elif input_value == 4:
         exit()
         running = False
     else:
