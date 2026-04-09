@@ -51,5 +51,4 @@ while running:
         print('Invalid option!')
 
     if not verify_chain():
-        print('Invalid block in blockchain.')
         running = False

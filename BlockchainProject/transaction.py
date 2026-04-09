@@ -1,5 +1,6 @@
 from BlockchainProject.blockchain import MINING_REWARD, open_transactions
 from BlockchainProject.wallet import wallet
+from collections import OrderedDict
 
 participents = {'Matt'}
 
@@ -13,7 +14,7 @@ def add_transaction(sender, recipient, value=1.0):
         value = float, value of transaction (default = 1.0)
     """
     if verify_transaction(value):
-        transaction = { 'sender': sender, 'recipient': recipient, 'value': value }
+        transaction = OrderedDict([('sender', sender), ('recipient', recipient), ('value', value)])
         open_transactions.append(transaction)
         participents.add(sender)
         participents.add(recipient)
