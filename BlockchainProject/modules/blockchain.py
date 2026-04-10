@@ -10,7 +10,7 @@ blockchain = []
 def initialize_blockchain():
     try:
         read_chain()
-    except FileNotFoundError:
+    except (FileNotFoundError, IOError, IndexError):
         print('creating genesis block')
         genesis_block = {'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100}
         return [genesis_block]
@@ -25,10 +25,13 @@ def read_chain():
         open_transactions = [parse_transaction(tx) for tx in json.loads(data[1])]
 
 def save_chain():
-    with open('blockchain.txt', mode='w') as f:
-        f.write(json.dumps(blockchain))
-        f.write('\n')
-        f.write(json.dumps(open_transactions))
+    try:
+        with open('blockchain.txt', mode='w') as f:
+            f.write(json.dumps(blockchain))
+            f.write('\n')
+            f.write(json.dumps(open_transactions))
+    except IOError:
+        print('could not save file')
 
 
 def parse_block(block):
