@@ -1,4 +1,4 @@
-from modules.blockchain import MINING_REWARD, open_transactions
+from modules.blockchain import owner, MINING_REWARD, open_transactions, save_chain
 from modules.wallet import wallet
 from collections import OrderedDict
 
@@ -18,6 +18,7 @@ def add_transaction(sender, recipient, value=1.0):
         open_transactions.append(transaction)
         participents.add(sender)
         participents.add(recipient)
+        save_chain()
         return transaction
     return False
 

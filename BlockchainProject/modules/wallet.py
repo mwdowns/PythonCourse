@@ -1,6 +1,6 @@
-from modules.blockchain import blockchain, owner, open_transactions
+from modules.blockchain import owner, open_transactions, blockchain
 
-def initialize_wallet(owner): 
+def initialize_wallet(owner):
     # wallet balance will be from blockchain
     return { 'name': owner, 'balance': get_balance(owner) }
 

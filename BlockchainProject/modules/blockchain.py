@@ -1,18 +1,49 @@
 import hashlib
 import json
 from collections import OrderedDict
+
 MINING_REWARD = 10.0
 owner = 'Matt'
 open_transactions = []
+blockchain = []
 
 def initialize_blockchain():
-    # initialize blockchain list, get from file, otherwise use genesis block
-    genesis_block = {'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100}
-    return [genesis_block]
+    try:
+        read_chain()
+    except FileNotFoundError:
+        print('creating genesis block')
+        genesis_block = {'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100}
+        return [genesis_block]
 
 
-blockchain = initialize_blockchain()
+def read_chain():
+    with open('blockchain.txt', mode='r') as f:
+        data = f.readlines()
+        global blockchain
+        global open_transactions
+        blockchain = [parse_block(block) for block in json.loads(data[0][:-1])]
+        open_transactions = [parse_transaction(tx) for tx in json.loads(data[1])]
 
+def save_chain():
+    with open('blockchain.txt', mode='w') as f:
+        f.write(json.dumps(blockchain))
+        f.write('\n')
+        f.write(json.dumps(open_transactions))
+
+
+def parse_block(block):
+    return {
+        'previous_hash': block['previous_hash'], 
+        'index': block['index'],
+        'transactions': [parse_transaction(tx) for tx in block['transactions']],
+        'proof': block['proof']}
+
+
+def parse_transaction(transaction):
+    return OrderedDict({'sender': transaction['sender'], 'recipient': transaction['recipient'], 'value': transaction['value'] })
+
+
+initialize_blockchain()
 
 def mine_block():
     last_block = blockchain[-1]
@@ -24,6 +55,7 @@ def mine_block():
     block = {'previous_hash': hashed_block, 'index': len(blockchain), 'transactions': copied_transactions, 'proof': proof}
     blockchain.append(block)
     open_transactions.clear()
+    save_chain()
 
 
 def valid_proof(transactions, last_hash, proof):

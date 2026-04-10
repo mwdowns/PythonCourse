@@ -1,5 +1,5 @@
-from modules.transaction import add_transaction
 from modules.blockchain import owner, mine_block, verify_chain
+from modules.transaction import add_transaction
 from modules.wallet import update_wallet, get_balance
 running = True
 
