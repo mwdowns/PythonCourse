@@ -37,8 +37,52 @@ class Blockchain:
         except IOError:
             print('could not save file')
 
-    def add_transaction(self, transaction):
+    def add_transaction(self, transaction, wallet, participants):
+        """
+        Add verified transaction dict to open_transactions list
+
+        Arguemnts:
+            transaction = Transaction object, takes the verifity_transaction method which returns true or false
+            wallet = Wallet object, used in verify_transaction to check balance
+            participants = Participants object, keeps track of participants
+        """
+        result = transaction.verify_transaction(wallet, self.MINING_REWARD)
+        if result:
+            self.open_transactions.append(transaction.parse_transaction())
+            participants.add_participent(transaction.sender)
+            participants.add_participent(transaction.recipient)
+            self.save_chain()
+        return result
+
+    def mine(self, wallet):
+        last_block = Block(self.blockchain[-1])
+        hashed_block, proof = last_block.mine_block()
+        reward_transaction = Transaction({'sender': 'MINING', 'recipient': wallet.owner, 'value': self.MINING_REWARD}).parse_transaction()
+        copied_transactions = self.open_transactions[:]
+        copied_transactions.append(reward_transaction)
+        block = {'previous_hash': hashed_block, 'index': len(self.blockchain), 'transactions': copied_transactions, 'proof': proof}
+        self.blockchain.append(block)
+        self.open_transactions.clear()
+        self.save_chain()
         pass
 
-    def mine(self):
-        pass
+    # not sure this will work
+    def verify_chain(self):
+        """ Verifies the blocks of the blockchaing and returns False if any block is invalid. """
+        for index, block in enumerate(self.blockchain):
+            if index == 0:
+                continue
+            last_block_mined = Block(self.blockchain[index - 1]).mine_block(self.open_transactions)
+            if block['previous_hash'] != last_block_mined[0]:
+                print('Invalid hash')
+                return False
+            proof_check = Block({
+                'index': block['index'],
+                'last_hash': block['last_hash'],
+                'transactions': block['transactions'][:-1],
+                'proof': block['proof']
+                }).mine_block(self.open_transactions)
+            if block['proof'] != proof_check[1]:
+                print('Proof of Work invalid')
+                return False
+        return True

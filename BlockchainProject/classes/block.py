@@ -1,5 +1,6 @@
 import hashlib
 import json
+import time
 
 
 class Block:
@@ -10,13 +11,14 @@ class Block:
         self.index = data['index']
         self.transactions = data['transactions']
         self.proof = data['proof']
+        self.created_at = data['created_at'] if 'created_at' in data else time()
 
     def parse_block(self):
         return { 'previous_hash': self.previous_hash, 'index': self.index, 'transactions': self.transactions, 'proof': self.proof }
 
     def mine_block(self, open_transactions):
         hashed_block = self.__hash_block()
-        return self.__proof_of_work(hashed_block, open_transactions)
+        return [hashed_block, self.__proof_of_work(hashed_block, open_transactions)]
     
     def __hash_block(self):   
         return hashlib.sha256(json.dumps(self.block, sort_keys=True).encode()).hexdigest()
