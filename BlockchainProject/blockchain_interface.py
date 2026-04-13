@@ -1,7 +1,9 @@
 from modules.blockchain import owner, mine_block, verify_chain
 from modules.transaction import add_transaction
 from modules.wallet import update_wallet, get_balance
-running = True
+# from classes.participants import Participants
+# from classes.blockchain import Blockchain
+# from classes.transaction import Transaction
 
 
 def get_user_input():
@@ -27,7 +29,7 @@ def show_menu():
 def exit():
     print("Goodbye!")
 
-
+running = True
 while running:
     show_menu()
 

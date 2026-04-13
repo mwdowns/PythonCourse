@@ -4,6 +4,7 @@ from collections import OrderedDict
 
 participents = {'Matt'}
 
+# add to blockchain class
 def add_transaction(sender, recipient, value=1.0):
     """
     Create a dict for a new transaction. If not a valid transaction, returns false.
@@ -22,7 +23,7 @@ def add_transaction(sender, recipient, value=1.0):
         return transaction
     return False
 
-
+# add to transaction class
 def verify_transaction(value):
     """
         Verifies a transaction amount against a user's balance or the mining reward. Returns true if amount is valid.
