@@ -4,9 +4,9 @@ import time
 
 
 class Block:
+    __MINING_KEY = '00'
     
     def __init__(self, data):
-        self.__MINING_KEY = '00'
         self.previous_hash = data['previous_hash']
         self.index = data['index']
         self.transactions = data['transactions']
@@ -14,14 +14,15 @@ class Block:
         self.created_at = data['created_at'] if 'created_at' in data else time.time()
 
     def parse_block(self):
-        return { 'previous_hash': self.previous_hash, 'index': self.index, 'transactions': self.transactions, 'proof': self.proof, 'created_at': self.created_at }
+        return self.__dict__.copy()
+        # return { 'previous_hash': self.previous_hash, 'index': self.index, 'transactions': self.transactions, 'proof': self.proof, 'created_at': self.created_at }
 
     def mine_block(self, open_transactions):
         hashed_block = self.__hash_block()
         return [hashed_block, self.__proof_of_work(hashed_block, open_transactions)]
     
     def __hash_block(self):   
-        return hashlib.sha256(json.dumps(self.block, sort_keys=True).encode()).hexdigest()
+        return hashlib.sha256(json.dumps(self.__dict__.copy(), sort_keys=True).encode()).hexdigest()
     
     def __proof_of_work(self, hashed_block, open_transactions):
         proof = 0
