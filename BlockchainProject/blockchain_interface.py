@@ -1,56 +1,14 @@
-from modules.blockchain import owner, mine_block, verify_chain
-from modules.transaction import add_transaction
-from modules.wallet import update_wallet, get_balance
-# from classes.participants import Participants
-# from classes.blockchain import Blockchain
-# from classes.transaction import Transaction
+import hashlib
 
+from classes.node import Node
 
-def get_user_input():
-    """ Returns a int for the user input. """
-    return int(input("Your option: "))
+def hash_name(name):
+    return hashlib.sha256(str(name).encode()).hexdigest()
 
+print('Hello! Welcome to MattChain!')
+name = input("What's your name? ")
 
-def get_transaction_value():
-    """ Returns a tuple for for transaction of recipient and value. """
-    recipient = input("Who are you sending money to? ")
-    tx_amount = float(input("What is the transaction amount? "))
-    return recipient, tx_amount
+n = Node(hash_name(name))
+n.run_node()
 
-
-def show_menu():
-    print("Please choose option.")
-    print("1. Mine block.")
-    print("2. Add transaction.")
-    print("3. Get balance.")
-    print("4. Exit")
-
-
-def exit():
-    print("Goodbye!")
-
-running = True
-while running:
-    show_menu()
-
-    input_value = get_user_input()
-    if input_value == 1:
-        mine_block()
-    elif input_value == 2:
-        recipient, tx_amount = get_transaction_value()
-        transaction = add_transaction(sender=owner, recipient=recipient, value=tx_amount)
-        if transaction:
-            update_wallet()
-        else:
-            print('not enough funds')
-            continue
-    elif input_value == 3:
-        print('Balance for {}: {:.2f}'.format(owner, get_balance(owner)))
-    elif input_value == 4:
-        exit()
-        running = False
-    else:
-        print('Invalid option!')
-
-    if not verify_chain():
-        running = False
+print('Thank you for visitng MattChain!')

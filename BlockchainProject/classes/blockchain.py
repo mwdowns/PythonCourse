@@ -7,7 +7,7 @@ from classes.participants import Participants
 
 
 class Blockchain:
-    MINING_REWARD = 10.0  
+    __MINING_REWARD = 10.0  
 
     def __init__(self, owner):
         self.owner = owner
@@ -49,7 +49,7 @@ class Blockchain:
             wallet = Wallet object, used in verify_transaction to check balance
             participants = Participants object, keeps track of participants
         """
-        result = transaction.verify_transaction(self.wallet.balance, self.MINING_REWARD)
+        result = transaction.verify_transaction(self.wallet.balance, self.__MINING_REWARD)
         print('----')
         print(result)
         print('----')
@@ -63,7 +63,7 @@ class Blockchain:
     def mine(self, wallet):
         last_block = Block(self.blockchain[-1])
         hashed_block, proof = last_block.mine_block()
-        reward_transaction = Transaction({'sender': 'MINING', 'recipient': wallet.owner, 'value': self.MINING_REWARD}).parse_transaction()
+        reward_transaction = Transaction({'sender': 'MINING', 'recipient': wallet.owner, 'value': self.__MINING_REWARD}).parse_transaction()
         copied_transactions = self.open_transactions[:]
         copied_transactions.append(reward_transaction)
         block = {'previous_hash': hashed_block, 'index': len(self.blockchain), 'transactions': copied_transactions, 'proof': proof}

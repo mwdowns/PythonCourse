@@ -3,20 +3,21 @@ from classes.transaction import Transaction
 
 class Node:
     
-    def __init__(self):
+    def __init__(self, wallet_id):
         self.running = True
+        self.wallet_id = wallet_id
 
     def run_node(self):
-        bc = Blockchain('Matt')
+        bc = Blockchain(self.wallet_id)
         w = bc.wallet
         while self.running:
-            self.show_menu()
+            self.__show_menu()
 
-            input_value = self.get_user_input()
+            input_value = self.__get_user_input()
             if input_value == 1:
                 bc.mine()
             elif input_value == 2:
-                recipient, tx_amount = self.get_transaction_value()
+                recipient, tx_amount = self.__get_transaction_value()
                 transaction = Transaction({'sender': bc.owner, 'recipient': recipient, 'amount': tx_amount})
                 if bc.add_transaction(transaction=transaction):
                     w.update_wallet()
@@ -26,7 +27,7 @@ class Node:
             elif input_value == 3:
                 print('Balance for {}: {:.2f}'.format(bc.owner, w.get_balance()))
             elif input_value == 4:
-                self.exit()
+                self.__exit()
                 self.running = False
             else:
                 print('Invalid option!')
@@ -34,19 +35,19 @@ class Node:
             if not bc.verify_chain():
                 self.running = False
     
-    def get_user_input():
+    def __get_user_input(self):
         """ Returns a int for the user input. """
         return int(input("Your option: "))
 
 
-    def get_transaction_value():
+    def __get_transaction_value(self):
         """ Returns a tuple for for transaction of recipient and value. """
         recipient = input("Who are you sending money to? ")
         tx_amount = float(input("What is the transaction amount? "))
         return recipient, tx_amount
 
 
-    def show_menu():
+    def __show_menu(self):
         print("Please choose option.")
         print("1. Mine block.")
         print("2. Add transaction.")
@@ -54,5 +55,5 @@ class Node:
         print("4. Exit")
 
 
-    def exit():
+    def __exit(self):
         print("Goodbye!")
