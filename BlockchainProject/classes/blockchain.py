@@ -2,7 +2,8 @@ import json
 
 from classes.block import Block
 from classes.transaction import Transaction
-
+from classes.wallet import Wallet
+from classes.participants import Participants
 
 
 class Blockchain:
@@ -10,15 +11,17 @@ class Blockchain:
 
     def __init__(self, owner):
         self.owner = owner
-        self.file_name = owner.lower() + '_blockchain.txt'
+        self.file_name = 'mattchain.txt'
         self.blockchain, self.open_transactions = self.initialize_blockchain()
+        self.wallet = Wallet(blockchain=self)
+        self.participants = Participants()
 
     def initialize_blockchain(self):
         try:
             self.read_chain()
         except (FileNotFoundError, IOError, IndexError):
             print('creating genesis block')
-            genesis_block = {'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100}
+            genesis_block = {'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100, 'created_at': '1776187276.032886'}
             return [genesis_block], []
     
     def read_chain(self):
@@ -37,7 +40,7 @@ class Blockchain:
         except IOError:
             print('could not save file')
 
-    def add_transaction(self, transaction, wallet, participants):
+    def add_transaction(self, transaction):
         """
         Add verified transaction dict to open_transactions list
 
@@ -46,11 +49,14 @@ class Blockchain:
             wallet = Wallet object, used in verify_transaction to check balance
             participants = Participants object, keeps track of participants
         """
-        result = transaction.verify_transaction(wallet, self.MINING_REWARD)
+        result = transaction.verify_transaction(self.wallet.balance, self.MINING_REWARD)
+        print('----')
+        print(result)
+        print('----')
         if result:
             self.open_transactions.append(transaction.parse_transaction())
-            participants.add_participent(transaction.sender)
-            participants.add_participent(transaction.recipient)
+            self.participants.add_participant(transaction.sender)
+            self.participants.add_participant(transaction.recipient)
             self.save_chain()
         return result
 
@@ -64,7 +70,6 @@ class Blockchain:
         self.blockchain.append(block)
         self.open_transactions.clear()
         self.save_chain()
-        pass
 
     # not sure this will work
     def verify_chain(self):

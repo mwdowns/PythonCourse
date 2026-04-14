@@ -1,5 +1,3 @@
-from blockchain import Blockchain
-
 class Wallet:
 
     def __init__(self, blockchain):

@@ -11,7 +11,7 @@ class Block:
         self.index = data['index']
         self.transactions = data['transactions']
         self.proof = data['proof']
-        self.created_at = data['created_at'] if 'created_at' in data else time()
+        self.created_at = data['created_at'] if 'created_at' in data else time.time()
 
     def parse_block(self):
         return { 'previous_hash': self.previous_hash, 'index': self.index, 'transactions': self.transactions, 'proof': self.proof }

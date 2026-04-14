@@ -11,8 +11,7 @@ class Transaction:
     def parse_transaction(self):
         return OrderedDict({ 'sender': self.sender, 'recipient': self.recipient, 'amount': self.amount })
 
-    def verify_transaction(self, wallet, reward):
-        balance = wallet['balance']
+    def verify_transaction(self, balance, reward):
         if self.amount >= (balance + reward) or self.amount > reward:
             return False
         return True
