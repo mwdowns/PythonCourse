@@ -26,7 +26,7 @@ class TestInitialBlockchain(unittest.TestCase):
         bc = Blockchain(owner)
         self.assertEqual(
             bc.blockchain,
-            [{'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100, 'created_at': '1776187276.032886'}],
+            [{'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100, 'created_at': 1776187276.032886}],
             'blockchain not initialized with genesis block'
         )
 

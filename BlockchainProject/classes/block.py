@@ -14,7 +14,7 @@ class Block:
         self.created_at = data['created_at'] if 'created_at' in data else time.time()
 
     def parse_block(self):
-        return { 'previous_hash': self.previous_hash, 'index': self.index, 'transactions': self.transactions, 'proof': self.proof }
+        return { 'previous_hash': self.previous_hash, 'index': self.index, 'transactions': self.transactions, 'proof': self.proof, 'created_at': self.created_at }
 
     def mine_block(self, open_transactions):
         hashed_block = self.__hash_block()

@@ -21,7 +21,7 @@ class Blockchain:
             self.read_chain()
         except (FileNotFoundError, IOError, IndexError):
             print('creating genesis block')
-            genesis_block = {'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100, 'created_at': '1776187276.032886'}
+            genesis_block = {'previous_hash': '', 'index': 0, 'transactions': [], 'proof': 100, 'created_at': 1776187276.032886}
             return [genesis_block], []
     
     def read_chain(self):
